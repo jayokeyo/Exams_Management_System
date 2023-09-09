@@ -1,0 +1,23 @@
+header {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	background: #8e6897 url("https://www.clipartmax.com/png/small/182-1828904_graduation-hat-free-icon-mr-gear-logo.png") center no-repeat;
+	height: 5%;
+	width: 100%;
+}
+i {
+	font-size:18px;
+	color: white;
+}
+#user_icon {
+	position: absolute;
+	bottom: 5px;
+	right: 5px;
+}
+#menu_icon {
+	position: absolute;
+	bottom: 5px;
+	left: 0px;
+}

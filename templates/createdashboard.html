@@ -1,0 +1,14 @@
+{%extends "base"%}
+{%block content%}
+<div>
+	<form style="display: flex;align-items: center;position: absolute;top: 40%;left: 38%;" action={{url_for('CreateDashboard')}} method="POST">
+		<div>
+			<input type="text" name="name" id="name" placeholder="name" required>
+		</div>
+		<div>
+                        <input type="text" name="description" id="description" placeholder="description">
+                </div>
+		<button type="submit"><strong>Create Dashboard</strong></button>
+	</form>
+</div>
+{%endblock%}

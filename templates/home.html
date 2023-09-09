@@ -1,0 +1,13 @@
+{%extends "base"%}
+{%block content%}
+<div style="display:inline-block;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);">
+	<p style="font-size:30px;font-family: 'Times New Roman', serif;"><strong>DASHBOARDS</strong></p>
+	{%for dashboard in dashboards%}
+	<div style="align-items:center;border:1px dotted black;border-radius:15%;padding: 20px;margin:20px;">
+		<a href={{url_for('Dashboard', name=dashboard['name'])}} 
+			style="font-size:30px;font-family:'Brush Script MT',cursive;margin-bottom:20px;">{{dashboard['name']}}</a>
+		<p style="font-size:20;font-family: 'Times New Roman', serif;">{{dashboard['description']}}<p>
+	</div>
+	{%endfor%}
+</div>
+{%endblock%}

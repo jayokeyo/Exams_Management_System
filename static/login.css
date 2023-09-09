@@ -1,0 +1,18 @@
+body {
+	background-image: url("https://www.clipartmax.com/png/small/182-1828904_graduation-hat-free-icon-mr-gear-logo.png");
+	background-repeat: no-repeat;
+	background-position: 50% -50%;
+	background-color: black;
+	height: 100%;
+	width: 100%;
+}
+#form {
+	display: flex;
+  	align-items: center;
+	position: absolute;
+	top: 40%;
+	left: 38%;
+}
+#form button {
+	background-color: green;
+}

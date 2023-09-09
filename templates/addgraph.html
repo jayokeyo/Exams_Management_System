@@ -1,0 +1,18 @@
+{%extends "base"%}
+{%block content%}
+<form style="display: flex;align-items: center;position: absolute;top: 40%;left: 28%;" action="./dashboards.html" method="GET">
+	<div>
+		<input type="text" name="COLUMN1" id="COLUMN1" placeholder="COLUMN1" required>
+	</div>
+	<div>
+		<input type="text" name="COLUMN2", id="COLUMN2" placeholder="COLUMN2">
+	</div>
+	<div>
+                <input type="text" name="WHERE" id="WHERE" placeholder="WHERE" required>
+        </div>
+	<div>
+                <input type="text" name="GROUPBY" id="GROUPBY" placeholder="GROUPBY">
+        </div>
+	<button type="submit"><strong>ADD</strong></button>
+</form>
+{%end block%}

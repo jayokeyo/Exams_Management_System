@@ -1,0 +1,57 @@
+#user_icon {
+	font-size:18px;
+	color: white;
+	position: absolute;
+	bottom: 5px;
+	right: 5px;
+}
+#upload {
+	font-size:18px;
+	color: white;
+	position: absolute;
+	bottom: 5px;
+	left: 0px;
+}
+#download {
+	font-size:18px;
+	color: white;
+	position: absolute;
+	bottom: 5px;
+	left: 5%;
+}
+#add {
+	font-size:18px;
+	color: white;
+	position: absolute;
+	bottom: 5px;
+	left: 10%;
+}
+.container {
+	display: block-inline;
+	width: 100%;
+	margin: 40px 0px 0px 20px;
+	padding-bottom: 60px;
+	position: absolute;
+  	left: 50%;
+	transform: translate(-50%);
+}
+.container a {
+	display: flex;
+  	flex-flow: row wrap;
+  	justify-content: center;
+	border: 2px solid black;
+	width: 10%;
+strong {
+  font-weight: bold;
+}
+#form {
+	display: flex;
+  	align-items: center;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+#form button {
+	background-color: green;
+}

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Exams Management System</title>
+		<meta charset="utf8">
+		<link rel="icon" href="https://www.clipartmax.com/png/small/182-1828904_graduation-hat-free-icon-mr-gear-logo.png">
+		<link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+	</head>
+	<body>
+		<form id="form" action="/" method="POST">
+			<div>
+				<input type="email" name="email" id="email" placeholder="email" required />
+			</div>
+			<div>
+				<input type="password" name="password", id="password" placeholder="password" required />
+			</div>
+			<button type="submit"><strong>Login</strong></button>
+		</form>
+	</body>
+</html>

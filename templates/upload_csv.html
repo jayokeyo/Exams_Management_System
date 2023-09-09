@@ -1,0 +1,18 @@
+{%extends "base"%}
+{%block content%}
+  <p>{% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <ul class=flashes>
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+  </p><form style="display: flex;align-items: center;position: absolute;
+		   top: 40%;left: 38%;" action={{url_for('UploadCSV')}} method="POST" 
+	  enctype = "multipart/form-data">
+    <input type="file" name="file" accept=".csv" />  
+    <input type = "submit" />
+  </form>
+{%endblock%}
