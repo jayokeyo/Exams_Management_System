@@ -1,53 +1,170 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>Exams Management System</title>
-		<meta charset="utf8">
-		<link rel="icon" href="https://www.clipartmax.com/png/small/182-1828904_graduation-hat-free-icon-mr-gear-logo.png">
-		<link rel="stylesheet" href="static/header.css">
-		<link rel="stylesheet" href="static/footer.css">
-		<link rel="stylesheet" href="static/main.css">
-		<link rel="stylesheet"
-          		href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
-          		integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
-          		crossorigin="anonymous">
-		<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1, shrink-to-fit=no"
+		/>
+		<title>WebStylePress</title>
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css"
+		/>
+		<style>
+			.container {
+				height: 100%;
+				font-size: 100px;
+			}
+			.row {
+				align-items: center;
+				text-align: center;
+				height: 100%;
+			}
+			.s-one {
+				color: #fff;
+				background-color: rgb(121, 49, 49);
+			}
+			.s-two {
+				color: #fff;
+				background-color: rgb(52, 116, 84);
+			}
+			.s-three {
+				color: #fff;
+				background-color: rgb(79, 64, 116);
+			}
+			.scroll-control {
+				position: fixed;
+				right: 20px;
+				top: 50%;
+				transform: translateX(-50%);
+				z-index: 999;
+			}
+			.scroll-control span {
+				cursor: pointer;
+				display: block;
+				width: 14px;
+				height: 14px;
+				border-radius: 50%;
+				margin: 10px 0;
+				background-color: #000;
+				opacity: 0.7;
+			}
+			.scroll-control span:hover {
+				opacity: 1;
+			}
+			@media all and (max-width: 1023px) {
+				.scroll-control span {
+					display: none;
+				}
+			}
+		</style>
 	</head>
-	<body style="overflow-y: auto;">
-		<header>
-			<nav>
-				<a href="templates/upload_csv.html">UPLOAD FILE</a>
-				<a href="templates/createdashboard.html">CREATE DASHBOARD</a>
-			</nav>
-		</header>
-		<div style="height:100%;width:100%;position:absolute;top 50%;left:50%;transform:translate(-50%,-50%);
-			font-size:30px;font-family:'Brush Script MT',cursive;">
-			Welcome to Exams Management System
+	<body>
+		<div class="scroll-control">
+			<span class="one"></span>
+			<span class="two"></span>
+			<span class="three"></span>
 		</div>
-		<div style="position:absolute;top: 40%;left:50%;transform:translate(-60%,-50%);">
-			<h2>FEATURES</h2>
-		</div>
-		<div style="display:flex; text-align:center;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-			width: 100%;flex-flow: row;font-size:20;font-family: 'Times New Roman', serif;">
-			<div>
-				<h3>Uploading Exam Results to a Database</h3>
-				<p style="border:1px dotted black;border-radius:15%;padding: 20px;margin:20px;">
-				EMS provides a user friendly interface where teachers can upload .csv files.<br/>
-				This files are processed in the background and its contents are saved to the<br/>
-				results table of the EMS database
-				</p>
+
+		<section class="scroll s-one" data-section-name="s-one">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12">
+						<header>
+							<nav>
+								<a href="templates/upload_csv.html">UPLOAD FILE</a>
+								<a href="templates/createdashboard.html">CREATE DASHBOARD</a>
+							</nav>
+						</header>
+						<div style="height:100%;width:100%;position:absolute;top 50%;left:50%;transform:translate(-50%,-50%);
+							font-size:30px;font-family:'Brush Script MT',cursive;">Welcome to Exams Management System
+						</div>
+					</div>
+				</div>
 			</div>
-			<div>
-				<h3>Create Customized Dashboards</h3>
-                        	<p style="border:1px dotted black;border-radius:15%;padding: 20px;margin:20px;">
-				EMS provides the functionality to create customized dashboards. Interactive</br>
-				graphs or charts can be added to the dashboard to provide insights into student's</br>
-				data.
-				</p>
+		</section>
+
+		<section class="scroll s-two" data-section-name="s-two">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12">
+						<p>Section Two</p>
+					</div>
+				</div>
 			</div>
-		</div>
-		<footer>
-			<p><strong>&copy;Exams Management System, 2023</strong></p>
-		</footer>
+		</section>
+
+		<section class="scroll s-three" data-section-name="s-three">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12">
+						<p>Section Three</p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/scrollify/1.0.21/jquery.scrollify.min.js"
+			integrity="sha512-UyX8JsMsNRW1cYl8BoxpcamonpwU2y7mSTsN0Z52plp7oKo1u92Xqfpv6lOlTyH3yiMXK+gU1jw0DVCsPTfKew=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		></script>
+		<script>
+			$(document).ready(function () {
+				screenCheck();
+
+				$('.scroll-control .one').click(function () {
+					$.scrollify.move('#s-one');
+				});
+				$('.scroll-control .two').click(function () {
+					$.scrollify.move('#s-two');
+				});
+				$('.scroll-control .three').click(function () {
+					$.scrollify.move('#s-three');
+				});
+			});
+
+			$(window).on('resize', function () {
+				screenCheck();
+			});
+
+			function applyScroll() {
+				$.scrollify({
+					section: '.scroll',
+					sectionName: 'section-name',
+					//standardScrollElements: 'section',
+					easing: 'easeOutExpo',
+					scrollSpeed: 1100,
+					offset: 0,
+					scrollbars: true,
+					setHeights: true,
+					overflowScroll: true,
+					updateHash: false,
+					touchScroll: true,
+				});
+			}
+
+			function screenCheck() {
+				var deviceAgent = navigator.userAgent.toLowerCase();
+				var agentID = deviceAgent.match(/(iphone|ipod|ipad)/);
+				if (agentID || $(window).width() <= 1024) {
+					// its mobile screen
+					$.scrollify.destroy();
+					$('section').removeClass('scroll').removeAttr('style');
+					$.scrollify.disable();
+				} else {
+					// its desktop
+					$('section').addClass('scroll');
+					applyScroll();
+					$.scrollify.enable();
+				}
+			}
+		</script>
 	</body>
 </html>
