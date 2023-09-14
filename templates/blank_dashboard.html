@@ -1,0 +1,10 @@
+{%extends "base"%}
+{%block content%}
+<div style="display: flex; flex-flow: raw wrap;">
+	<div style="align-items:center;border:1px dotted black;border-radius:15%;padding: 20px;margin:20px;">
+		<a href={{url_for('AddGraph', dashboard_id=dashboard_id)}}
+			style="font-size:30px;font-family:'Brush Script MT',cursive;margin-bottom:20px;">Add Graph</a>
+		<p style="font-size:20;font-family: 'Times New Roman', serif;">Click link above to add a graph to dashboard<p>
+	</div>
+</div>
+{%endblock%}

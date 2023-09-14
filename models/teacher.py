@@ -2,6 +2,7 @@
 """ holds class Student"""
 import models
 from models.base_model import BaseModel, Base
+from models.dashboard import Dashboard
 import sqlalchemy
 from sqlalchemy import Column, String, ForeignKey, Table, MetaData
 from sqlalchemy.orm import relationship
@@ -28,6 +29,7 @@ class Teacher(BaseModel, Base):
     password = Column(String(300), nullable=False)
     subjects = relationship("Subject", secondary="teacher_subject", backref="teacher_subjects", viewonly=False)
     classes = relationship("Class", secondary="teacher_class", backref="teacher_classes", viewonly=False)
+    dashboards = relationship("Dashboard", backref="teachers", cascade="delete")
 
     def __init__(self, *args, **kwargs):
         """initializes Teacher"""

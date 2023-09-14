@@ -9,6 +9,7 @@ import sqlalchemy
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey, Integer
 from sqlalchemy import create_engine, insert
+from sqlalchemy.orm import sessionmaker
 import os
 import pandas as pd
 from dash import Dash, dcc, html
@@ -16,6 +17,8 @@ from werkzeug.exceptions import HTTPException
 from models import *
 from models import storage
 from models.result import Result
+from models.dashboard import Dashboard
+from models.graph import Graph
 from distutils.log import debug
 from fileinput import filename
 from os.path import join, dirname, realpath
@@ -37,6 +40,8 @@ app.secret_key = 'd3aaad1cd5790d3539c83760df66138d594a833e4b656270320a92317266fe
 UPLOAD_FOLDER = join(path, 'uploads')
 app.config['UPLOAD_FOLDER'] =  UPLOAD_FOLDER
 conn = create_engine('mysql+mysqldb://root@localhost/EMS_dev', pool_pre_ping=True).connect()
+Session = sessionmaker(bind = conn)
+session = Session()
 
 @app.route('/', methods = ["GET"], strict_slashes=False)
 def login_page():
@@ -60,10 +65,7 @@ def login():
 @app.route('/<teacher_id>/home', methods = ["GET", "POST"], strict_slashes=False)
 def home(teacher_id):
     """homeview for a specific teacher"""
-    all_dashboards = storage.all("Dashboards").values()
-    for dashboard in all_dashboards:
-        if (dashboard.teacher_id != teacher_id):
-            del(dashboard)
+    all_dashboards = session.query(Dashboard).filter(Dashboard.teacher_id == teacher_id).all()
     if (len(all_dashboards) == 0):
         return render_template('welcome.html')
     return render_template("home.html", dashboards = all_dashboards)
@@ -79,57 +81,18 @@ def CreateDashboard():
     newDashboard = Dashboard()
     newDashboard.name = request.form.get('name')
     newDashboard.description = request.form.get('description')
-    teacher_id = teacher_id
+    newDashboard.teacher_id = teacher_id
+    storage.new(newDashboard)
+    storage.save()
     return redirect(url_for('home', teacher_id = teacher_id))
 
 @app.route('/dashboards/<dashboard_id>', methods = ['GET'], strict_slashes=False)
-def Dashboard(dashboard_id):
+def ViewDashboard(dashboard_id):
     """view for a specific dashboards"""
-    all_graphs = storage.all("Graphs").values()
-    for graph in all_graphs:
-        if (graph.dashboard_id != dashboard_id):
-            del(graph)
-    if (len(all_graphs != 0)):
-        app.layout = html.Div(
-                children=[
-                    html.H1(children=dashboard.name),
-                    html.P(children=dashboard.description),
-                    for graph in all_graphs:
-                        if (graph.y_axis != NULL):
-                            dcc.Graph(
-                                figure={
-                                    "data": [
-                                        {
-                                            "x": graph.x_axis,
-                                            "y": graph.y_axis,
-                                            "type": graph.graph_type,
-                                            },
-                                        ],
-                                    "layout": {"title": graph.description},
-                                    },
-                                ),
-                        else:
-                            dcc.Graph(
-                                figure={
-                                    "data": [
-                                        {
-                                            "x": graph.group_by,
-                                            "y": graph.x_axis,
-                                            "type": graph.graph_type,
-                                            },
-                                        ],
-                                    "layout": {"title": graph.description},
-                                    },
-                                ),
-                            html.a(children='Add Graph', href=graph.dashboard_id+'/addgraph',target='_blank'),
-                            ]
-                )
-    else:
-        app.layout = html.div(children=[
-            html,H1(children=dashboard.name),
-            html.P(children=dashboard.description),
-            html.a(children='Add Graph', href=graph.dashboard_id+'/addgraph',target='_blank'),
-            ]
+    all_graphs = session.query(Graph).filter(Graph.dashboard_id == dashboard_id).all()
+    if (len(all_graphs) == 0):
+        return render_template('blank_dashboard.html', dashboard_id = dashboard_id)
+    return render_template("dashboard.html", graphs = all_graphs)
 
 @app.route('/<dashboard_id>/addgraph', methods = ["GET"], strict_slashes=False)
 def AddGraph_post(dashboard_id):
@@ -144,8 +107,17 @@ def AddGraph(dashboard_id):
         newGraph.dashboard_id = dashboard_id
         newGraph.x_axis = request.form.get("x_axis")
         newGraph.y_axis = request.form.get("y_axis")
-        newGraph.condition = request.form.get("condition")
-        newGraph.condition = request.form.get("condition")
+        newGraph.where_clause = request.form.get("condition")
+        newGraph.graph_type = request.form.get("graph_type")
+        newGraph.description = request.form.get("description")
+        storage.new(newGraph)
+        storage.save()
+    return redirect(url_for('home', teacher_id = teacher_id))
+
+@app.route('/<dashboard_id>/success', methods=["GET", "POST"], strict_slashes=False)
+def Success(dashboard_id):
+    '''render success message after adding graph to dashboards'''
+    return render_template('success.html')
 
 @app.route('/uploadcsv', strict_slashes=False)
 def UploadCSV_form():

@@ -4,7 +4,7 @@
 	<p style="font-size:30px;font-family: 'Times New Roman', serif;"><strong>DASHBOARDS</strong></p>
 	{%for dashboard in dashboards%}
 	<div style="align-items:center;border:1px dotted black;border-radius:15%;padding: 20px;margin:20px;">
-		<a href={{url_for('Dashboard', dashboard_id=dashboard['id'])}} 
+		<a href={{url_for('ViewDashboard', dashboard_id=dashboard['id'])}} 
 			style="font-size:30px;font-family:'Brush Script MT',cursive;margin-bottom:20px;">{{dashboard['name']}}</a>
 		<p style="font-size:20;font-family: 'Times New Roman', serif;">{{dashboard['description']}}<p>
 	</div>

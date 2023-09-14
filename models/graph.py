@@ -13,7 +13,7 @@ class Graph(BaseModel, Base):
     x_axis = Column(String(128), nullable=False)
     y_axis = Column(String(128), nullable=True)
     where_clause = Column(String(128), nullable=False)
-    groupby_clause = Column(String(128), nullable=True)
+    group_by = Column(String(128), nullable=True)
     graph_type = Column(String(128), nullable=False)
     description = Column(String(1000), nullable=True)
 

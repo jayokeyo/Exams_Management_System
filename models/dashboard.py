@@ -4,7 +4,7 @@ import models
 from models.base_model import BaseModel, Base
 from models.graph import Graph
 import sqlalchemy
-from sqlalchemy import Column, String
+from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
 
 
@@ -13,6 +13,7 @@ class Dashboard(BaseModel, Base):
     __tablename__ = 'dashboards'
     name = Column(String(128), nullable=False)
     description = Column(String(1000), nullable=True)
+    teacher_id = Column(String(60), ForeignKey('teachers.id'))
     graphs = relationship("Graph", backref="dashboards", cascade="delete")
 
     def __init__(self, *args, **kwargs):

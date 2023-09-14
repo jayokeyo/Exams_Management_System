@@ -6,6 +6,8 @@ Contains the class DBStorage
 import models
 from models import base_model, teacher, student, classes, subject, result, watchlist
 from models.teacher import Teacher
+from models.dashboard import Dashboard
+from models.graph import Graph
 from models.parent import Parent
 from models.base_model import BaseModel, Base
 from models.classes import Class

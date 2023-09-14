@@ -1,18 +1,24 @@
 {%extends "base"%}
 {%block content%}
-<form style="display: flex;align-items: center;position: absolute;top: 40%;left: 28%;" action="./dashboards.html" method="GET">
+<form style="display: flex;align-items: center;position: absolute;top: 40%;left: 28%;" action='addgraph' method="POST">
 	<div>
-		<input type="text" name="COLUMN1" id="COLUMN1" placeholder="COLUMN1" required>
+		<input type="text" name="x_axis" id="x_axis" placeholder="x_axis" required>
 	</div>
 	<div>
-		<input type="text" name="COLUMN2", id="COLUMN2" placeholder="COLUMN2">
+		<input type="text" name="y_axis", id="y_axis" placeholder="y_axis">
 	</div>
 	<div>
-                <input type="text" name="WHERE" id="WHERE" placeholder="WHERE" required>
+                <input type="text" name="condition" id="condition" placeholder="condition" required>
         </div>
 	<div>
-                <input type="text" name="GROUPBY" id="GROUPBY" placeholder="GROUPBY">
+                <input type="text" name="group_by" id="group_by" placeholder="group_by">
+        </div>
+	<div>
+                <input type="text" name="graph_type" id="graph_type" placeholder="graph_type">
+        </div>
+	<div>
+                <input type="text" name="description" id="description" placeholder="description">
         </div>
 	<button type="submit"><strong>ADD</strong></button>
 </form>
-{%end block%}
+{%endblock%}
