@@ -11,6 +11,7 @@ from sqlalchemy import Column, String, ForeignKey, Integer
 from sqlalchemy import create_engine, insert
 import os
 import pandas as pd
+from dash import Dash, dcc, html
 from werkzeug.exceptions import HTTPException
 from models import *
 from models import storage
@@ -92,7 +93,7 @@ def Dashboard(dashboard_id):
         app.layout = html.Div(
                 children=[
                     html.H1(children=dashboard.name),
-                    html.P(children=(dashboard.description),),
+                    html.P(children=dashboard.description),
                     for graph in all_graphs:
                         if (graph.y_axis != NULL):
                             dcc.Graph(
@@ -120,9 +121,15 @@ def Dashboard(dashboard_id):
                                     "layout": {"title": graph.description},
                                     },
                                 ),
-                            html.a(children='Add Graph', href=graph.dashboard_id+'/addgraph',target='_blank')
+                            html.a(children='Add Graph', href=graph.dashboard_id+'/addgraph',target='_blank'),
                             ]
                 )
+    else:
+        app.layout = html.div(children=[
+            html,H1(children=dashboard.name),
+            html.P(children=dashboard.description),
+            html.a(children='Add Graph', href=graph.dashboard_id+'/addgraph',target='_blank'),
+            ]
 
 @app.route('/<dashboard_id>/addgraph', methods = ["GET"], strict_slashes=False)
 def AddGraph_post(dashboard_id):
