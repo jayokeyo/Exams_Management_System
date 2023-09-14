@@ -9,6 +9,7 @@ import sqlalchemy
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey, Integer
 from sqlalchemy import create_engine, insert
+from sqlalchemy.sql import text
 from sqlalchemy.orm import sessionmaker
 import os
 import pandas as pd
@@ -90,9 +91,46 @@ def CreateDashboard():
 def ViewDashboard(dashboard_id):
     """view for a specific dashboards"""
     all_graphs = session.query(Graph).filter(Graph.dashboard_id == dashboard_id).all()
+    graphs = []
+    for graph in all_graphs:
+        graph_obj = {}
+        xCol = graph.x_axis if graph.y_axis is not None else graph.group_by
+        yCol = graph.y_axis if graph.y_axis is not None else graph.x_axis
+        graph_obj['id'] = graph.id
+        graph_obj['graph_type'] = graph.graph_type
+        graph_obj['description'] = graph.description
+        graph_obj['xValues'] = []
+        graph_obj['yValues'] = []
+        results = session.query(Result).filter(text(graph.where_clause)).all()
+        for result in results:
+            if (xCol == "scores"):
+                graph_obj['xValues'].append(int(result.score))
+            if (xCol == "subject_id"):
+                graph_obj['xValues'].append(result.subject_id)
+            if (xCol == "student_id"):
+                graph_obj['xValues'].append(result.student_id)
+            if (xCol == "class_id"):
+                graph_obj['xValues'].append(result.class_id)
+            if (xCol == "grade"):
+                graph_obj['xValues'].append(result.grade)
+            if (xCol == "exam_id"):
+                graph_obj['xValues'].append(result.exam_id)
+            if (yCol == "scores"):
+                graph_obj['yValues'].append(int(result.score))
+            if (yCol == "subject_id"):
+                graph_obj['yValues'].append(result.subject_id)
+            if (yCol == "student_id"):
+                graph_obj['yValues'].append(result.student_id)
+            if (yCol == "class_id"):
+                graph_obj['yValues'].append(result.class_id)
+            if (yCol == "exam_id"):
+                graph_obj['yValues'].append(result.exam_id)
+            if (yCol == "grade"):
+                graph_obj['yValues'].append(result.grade)
+        graphs.append(graph_obj)
     if (len(all_graphs) == 0):
         return render_template('blank_dashboard.html', dashboard_id = dashboard_id)
-    return render_template("dashboard.html", graphs = all_graphs)
+    return render_template("dashboard.html", graphs = graphs)
 
 @app.route('/<dashboard_id>/addgraph', methods = ["GET"], strict_slashes=False)
 def AddGraph_post(dashboard_id):

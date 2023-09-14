@@ -1,11 +1,26 @@
 {%extends "base"%}
 {%block content%}
-	<div style="display:inline-block;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);">
-        {%for dashboard in dashboards%}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+	<div style="display:flex;flex-flow;row wrap;position: absolute; top: 20%;">
+        {%for graph in graphs%}
         <div style="align-items:center;border:1px dotted black;border-radius:15%;padding: 20px;margin:20px;">
-                <a href={{url_for('Dashboard', name=dashboard['name'])}} 
-                        style="font-size:30px;font-family:'Brush Script MT',cursive;margin-bottom:20px;">{{dashboard['name']}}</a>
-                <p style="font-size:20;font-family: 'Times New Roman', serif;">{{dashboard['description']}}<p>
+                <canvas id=graph.id style="width:30%;max-width:700px"></canvas>
+		<script>
+			var xValues = graph.xValues;
+			var yValues = graph.yValues;
+			new Chart(graph.id, {
+				type: graph.graph_type,
+				data: {
+					labels: xValues,
+					datasets: [{
+						backgroundColor:"rgba(0,0,255,1.0)",
+						borderColor: "rgba(0,0,255,0.1)",
+						data: yValues
+					}]
+				},
+				options:{...}
+			});
+		</script>
         </div>
         {%endfor%}
 	</div>
