@@ -3,12 +3,13 @@
 import models
 from models.base_model import BaseModel, Base
 import sqlalchemy
-from sqlalchemy import Column, String
+from sqlalchemy import Column, String, ForeignKey
 
 
 class Graph(BaseModel, Base):
     """Representation of a graph """
     __tablename__ = 'graphs'
+    dashboard_id = Column(String(60), ForeignKey("dashboards.id"))
     x_axis = Column(String(128), nullable=False)
     y_axis = Column(String(128), nullable=True)
     where_clause = Column(String(128), nullable=False)

@@ -30,11 +30,7 @@ port = os.getenv('EMS_API_PORT', 5000)
 #app.register_blueprint(app_views)
 
 global teacher_id
-global dash_obj
-global name
-name = "EMS USER"
 teacher_id = ""
-dash_obj = {}
 path = os.getcwd()
 app.secret_key = 'd3aaad1cd5790d3539c83760df66138d594a833e4b656270320a92317266fe67'
 UPLOAD_FOLDER = join(path, 'uploads')
@@ -49,7 +45,6 @@ def login_page():
 @app.route('/', methods = ["POST"], strict_slashes=False)
 def login():
     global teacher_id
-    global name
     '''Authentication method'''
     email = request.form.get('email')
     password = request.form.get('password')
@@ -58,19 +53,19 @@ def login():
         if (teacher.email == email and teacher.password == password):
             teacher_id = teacher.id
             name = teacher.first_name+" "+teacher.surname
-            return redirect(url_for('home', name = name, teacher_id = teacher_id))
-    flash('Please check your login details and try again.')
+            return redirect(url_for('home', teacher_id = teacher_id))
     return redirect(url_for('login'))
 
 @app.route('/<teacher_id>/home', methods = ["GET", "POST"], strict_slashes=False)
 def home(teacher_id):
     """homeview for a specific teacher"""
-    try:
-        dashboards = dash_obj[teacher_id]
-    except KeyError:
+    all_dashboards = storage.all("Dashboards").values()
+    for dashboard in all_dashboards:
+        if (dashboard.teacher_id != teacher_id):
+            del(dashboard)
+    if (len(all_dashboards) == 0):
         return render_template('welcome.html')
-    else:
-        return render_template("home.html", dashboards = dashboards)
+    return render_template("home.html", dashboards = all_dashboards)
 
 @app.route('/createdashboard', methods = ['GET'], strict_slashes=False)
 def CreateDashboard_post():
@@ -80,59 +75,70 @@ def CreateDashboard_post():
 @app.route('/createdashboard', methods = ['POST'], strict_slashes=False)
 def CreateDashboard():
     """logic for creating new dashboard"""
-    global dash_obj
-    newDashboard = {"name": request.form.get('name'), "description": request.form.get('description')}
-    try:
-        dash_obj[teacher_id].append(newDashboard)
-        print(dash_obj[teacher_id])
-    except KeyError:
-        dash_obj[teacher_id] = [newDashboard,]
-        print(dash_obj[teacher_id])
+    newDashboard = Dashboard()
+    newDashboard.name = request.form.get('name')
+    newDashboard.description = request.form.get('description')
+    teacher_id = teacher_id
     return redirect(url_for('home', teacher_id = teacher_id))
 
-@app.route('/dashboards/<name>', methods = ['GET', 'POST'], strict_slashes=False)
-def Dashboard(name):
+@app.route('/dashboards/<dashboard_id>', methods = ['GET'], strict_slashes=False)
+def Dashboard(dashboard_id):
     """view for a specific dashboards"""
-    return render_template("dashboard.html")
+    all_graphs = storage.all("Graphs").values()
+    for graph in all_graphs:
+        if (graph.dashboard_id != dashboard_id):
+            del(graph)
+    if (len(all_graphs != 0)):
+        app.layout = html.Div(
+                children=[
+                    html.H1(children=dashboard.name),
+                    html.P(children=(dashboard.description),),
+                    for graph in all_graphs:
+                        if (graph.y_axis != NULL):
+                            dcc.Graph(
+                                figure={
+                                    "data": [
+                                        {
+                                            "x": graph.x_axis,
+                                            "y": graph.y_axis,
+                                            "type": graph.graph_type,
+                                            },
+                                        ],
+                                    "layout": {"title": graph.description},
+                                    },
+                                ),
+                        else:
+                            dcc.Graph(
+                                figure={
+                                    "data": [
+                                        {
+                                            "x": graph.group_by,
+                                            "y": graph.x_axis,
+                                            "type": graph.graph_type,
+                                            },
+                                        ],
+                                    "layout": {"title": graph.description},
+                                    },
+                                ),
+                            html.a(children='Add Graph', href=graph.dashboard_id+'/addgraph',target='_blank')
+                            ]
+                )
 
-@app.route('/<dashboard_id>/addgraph', methods = ["GET", "POST"], strict_slashes=False)
+@app.route('/<dashboard_id>/addgraph', methods = ["GET"], strict_slashes=False)
+def AddGraph_post(dashboard_id):
+    """form for adding a graph"""
+    return render_template('addgraph.html')
+
+@app.route('/<dashboard_id>/addgraph', methods = ["POST"], strict_slashes=False)
 def AddGraph(dashboard_id):
     """logic for adding a graph to dashboard"""
-    query = "SELECT "
-    query+request.form["COLUMN1"]
-    if (request.form["column2"] != NULL):
-        query+", "+request.form["COLUMN2"]+" "
-    query+"FROM results WHERE "+request.form["WHERE"]+" "
-    if (request.form["GROUPBY"] != NULL):
-        query+"GROUPBY "+request.form["GROUPBY"]
-    df = pd.read_sql(query, 'mysql:///EMS_dev')
-
-    if (request.form["column2"] != NULL):
-        dcc.Graph(
-                figure={
-                    "data": [
-                        {
-                            "x": df[request.form["column1"]],
-                            "y": df[request.form["column2"]],
-                            "type": "lines",
-                        },
-                    ],
-                    "layout": {"title": request.form["description"]}, #Add description to form
-                },
-            )
-    else:
-        dcc.Graph(
-                figure={
-                    "data": [
-                        {
-                            "x": df["GROUPBY"],
-                            "y": df["COLUMN1"],
-                            "type": "lines",
-                        },
-                    ],
-                    "layout": {"title": request.form["description"]},
-                },
-            )
+    if (request.method == "POST"):
+        newGraph = Graph()
+        newGraph.dashboard_id = dashboard_id
+        newGraph.x_axis = request.form.get("x_axis")
+        newGraph.y_axis = request.form.get("y_axis")
+        newGraph.condition = request.form.get("condition")
+        newGraph.condition = request.form.get("condition")
 
 @app.route('/uploadcsv', strict_slashes=False)
 def UploadCSV_form():
